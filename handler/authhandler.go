@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"net/http"
 
+	"github.com/go-chi/chi/v5"
 	"github.com/go-playground/validator/v10"
 	"github.com/renaldyhidayatt/redditgoent/dto/request"
 	"github.com/renaldyhidayatt/redditgoent/dto/response"
@@ -93,4 +94,16 @@ func (h *authHandler) Login(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 	}
+}
+
+func (h *authHandler) VerifyToken(w http.ResponseWriter, r *http.Request) {
+	token := chi.URLParam(r, "token")
+
+	res, err := h.service.VerifyToken(token)
+
+	if err != nil {
+		response.ResponseError(w, http.StatusBadRequest, err)
+	}
+
+	response.ResponseMessage(w, "Berhasil mendapatkan verify token", res, http.StatusOK)
 }

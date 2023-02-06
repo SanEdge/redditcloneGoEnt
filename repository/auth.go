@@ -43,15 +43,15 @@ func (r *authRepository) Login(input request.LoginRequest) (*ent.User, error) {
 
 func (r *authRepository) Register(input request.RegisterRequest) (*ent.User, error) {
 
-	// user, err := r.db.User.Query().Where(user.EmailEQ(input.Email)).First(r.context)
+	user, err := r.db.User.Query().Where(user.EmailEQ(input.Email)).First(r.context)
 
-	// if err != nil {
-	// 	return nil, fmt.Errorf("failed query user by email: %w", err)
-	// }
+	if err != nil {
+		return nil, fmt.Errorf("failed query user by email: %w", err)
+	}
 
-	// if user.ID != 0 {
-	// 	return nil, fmt.Errorf("email already exits")
-	// }
+	if user.ID != 0 {
+		return nil, fmt.Errorf("email already exits")
+	}
 
 	newUser, err := r.db.User.Create().SetUsername(input.Username).SetEmail(input.Email).SetPassword(security.HashPassword(input.Password)).SetEnabled(false).Save(r.context)
 
