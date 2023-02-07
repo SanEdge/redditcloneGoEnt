@@ -25,5 +25,6 @@ func NewAuthRoutes(prefix string, db *ent.Client, router *chi.Mux, context conte
 		r.Post("/login", handler.Login)
 
 		r.Post("/register", handler.Register)
+		r.Get("/:token", handler.VerifyToken)
 	})
 }
