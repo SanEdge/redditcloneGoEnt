@@ -10,7 +10,7 @@ type IPostRepository interface {
 	FindById(id int) (*ent.Post, error)
 	FindAll() ([]*ent.Post, error)
 	FindPostBySubreddit(id int) ([]*ent.Post, error)
-	FindByEmail(email string) (*ent.User, error)
+	FindByEmail(email string) (*ent.Post, error)
 }
 
 type IPostService interface {
@@ -18,5 +18,5 @@ type IPostService interface {
 	FindById(id int) (*ent.Post, error)
 	FindAll() ([]*ent.Post, error)
 	FindPostBySubreddit(id int) ([]*ent.Post, error)
-	FindByEmail(email string) (*ent.User, error)
+	FindByEmail(email string) (*ent.Post, error)
 }

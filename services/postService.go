@@ -40,7 +40,7 @@ func (s *postService) FindPostBySubreddit(id int) ([]*ent.Post, error) {
 	return res, err
 }
 
-func (s *postService) FindByEmail(email string) (*ent.User, error) {
+func (s *postService) FindByEmail(email string) (*ent.Post, error) {
 	res, err := s.repository.FindByEmail(email)
 
 	return res, err

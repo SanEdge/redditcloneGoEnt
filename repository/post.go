@@ -27,7 +27,7 @@ func (r *postRepository) Create(email string, input request.PostRequest) (*ent.P
 		return nil, fmt.Errorf("failed create post: %w", err)
 	}
 
-	user, err := r.db.User.Query().Where(user.EmailEQ(email)).First(r.context)
+	user, err := r.db.User.Query().Where(user.EmailEQ(email)).Where(user.EnabledEQ(true)).First(r.context)
 
 	if err != nil {
 		return nil, fmt.Errorf("failed result user: %w", err)
@@ -53,7 +53,7 @@ func (r *postRepository) FindById(id int) (*ent.Post, error) {
 }
 
 func (r *postRepository) FindAll() ([]*ent.Post, error) {
-	post, err := r.db.Post.Query().WithUser().All(r.context)
+	post, err := r.db.Post.Query().WithUser(func(uq *ent.UserQuery) { uq.Where(user.EnabledEQ(true)) }).All(r.context)
 
 	if err != nil {
 		return nil, fmt.Errorf("failed results post: %w", err)
@@ -80,8 +80,8 @@ func (r *postRepository) FindPostBySubreddit(id int) ([]*ent.Post, error) {
 	return post, nil
 }
 
-func (r *postRepository) FindByEmail(username string) (*ent.User, error) {
-	post, err := r.db.Post.Query().QueryUser().Where(user.UsernameEQ(username)).First(r.context)
+func (r *postRepository) FindByEmail(email string) (*ent.Post, error) {
+	post, err := r.db.Post.Query().WithUser(func(uq *ent.UserQuery) { uq.Where(user.EmailEQ(email)) }).First(r.context)
 
 	if err != nil {
 		return nil, fmt.Errorf("failed result post: %w", err)
