@@ -1,0 +1,82 @@
+Table "comments" {
+  "id" bigint [not null]
+  "text" text [not null]
+  "created_at" timestamp [not null]
+  "updated_at" timestamp
+}
+
+Table "post_subreddit" {
+  "post_id" bigint [not null]
+  "subreddit_id" bigint [not null]
+}
+
+Table "post_user" {
+  "post_id" bigint [not null]
+  "user_id" bigint [not null]
+}
+
+Table "posts" {
+  "id" bigint [not null]
+  "postname" "character varying" [not null]
+  "url" "character varying" [not null]
+  "description" text [not null]
+  "vote_count" bigint [not null, default: 0]
+  "created_at" timestamp [not null]
+  "updated_at" timestamp
+  "comment_post" bigint
+  "vote_post" bigint
+}
+
+Table "subreddits" {
+  "id" bigint [not null]
+  "name" "character varying" [not null]
+  "description" text [not null]
+  "created_at" timestamp [not null]
+  "updated_at" timestamp
+}
+
+Table "users" {
+  "id" bigint [not null]
+  "username" "character varying" [not null]
+  "email" "character varying" [not null]
+  "password" "character varying" [not null]
+  "enabled" boolean [not null, default: false]
+  "created_at" timestamp [not null]
+  "updated_at" timestamp
+  "comment_user" bigint
+  "subreddit_user" bigint
+  "verification_token_user" bigint
+  "vote_user" bigint
+}
+
+Table "verification_tokens" {
+  "id" bigint [not null]
+  "token" "character varying" [not null]
+  "created_at" timestamp [not null]
+  "updated_at" timestamp
+}
+
+Table "votes" {
+  "id" bigint [not null]
+  "vote" "character varying" [not null]
+}
+
+Ref "post_subreddit_post_id":"posts"."id" < "post_subreddit"."post_id" [delete: cascade]
+
+Ref "post_subreddit_subreddit_id":"subreddits"."id" < "post_subreddit"."subreddit_id" [delete: cascade]
+
+Ref "post_user_post_id":"posts"."id" < "post_user"."post_id" [delete: cascade]
+
+Ref "post_user_user_id":"users"."id" < "post_user"."user_id" [delete: cascade]
+
+Ref "posts_comments_post":"comments"."id" < "posts"."comment_post" [delete: set null]
+
+Ref "posts_votes_post":"votes"."id" < "posts"."vote_post" [delete: set null]
+
+Ref "users_comments_user":"comments"."id" < "users"."comment_user" [delete: set null]
+
+Ref "users_subreddits_user":"subreddits"."id" < "users"."subreddit_user" [delete: set null]
+
+Ref "users_verification_tokens_user":"verification_tokens"."id" < "users"."verification_token_user" [delete: set null]
+
+Ref "users_votes_user":"votes"."id" < "users"."vote_user" [delete: set null]

@@ -8,3 +8,8 @@ Aplikasi sederhana menggunakan Chi dan Query Builder Ent
 - Chi
 - Postgres
 - Ent(Query Builder)
+
+
+### Schema Database RedditGoent
+
+<img src="images/redditgoent.png" alt="redditgoent" />
