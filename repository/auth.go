@@ -25,7 +25,7 @@ func NewAuthRepository(db *ent.Client, context context.Context) *authRepository 
 }
 
 func (r *authRepository) Login(input request.LoginRequest) (*ent.User, error) {
-	user, err := r.db.User.Query().Where(user.EmailEQ(input.Email)).First(r.context)
+	user, err := r.db.User.Query().Where(user.EmailEQ(input.Email)).Where(user.EnabledEQ(true)).First(r.context)
 
 	if err != nil {
 		return nil, fmt.Errorf("failed query user by email: %w", err)
@@ -43,7 +43,7 @@ func (r *authRepository) Login(input request.LoginRequest) (*ent.User, error) {
 
 func (r *authRepository) Register(input request.RegisterRequest) (*ent.User, error) {
 
-	user, err := r.db.User.Query().Where(user.EmailEQ(input.Email)).First(r.context)
+	user, err := r.db.User.Query().Where(user.EmailEQ(input.Email)).Where(user.EnabledEQ(true)).First(r.context)
 
 	if err != nil {
 		return nil, fmt.Errorf("failed query user by email: %w", err)
